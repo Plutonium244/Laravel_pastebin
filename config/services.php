@@ -34,5 +34,10 @@ return [
         'client_secret' => env('GOOGLE_API_SECRET_KEY'),
         'redirect' => 'http://localhost:8000/auth/google/callback',
     ],
+    'github' => [
+        'client_id' => env('GITHUB_KEY'),
+        'client_secret' => env('GITHUB_SECRET'),
+        'redirect' => 'http://localhost:8000/auth/github/callback',
+    ],
 
 ];

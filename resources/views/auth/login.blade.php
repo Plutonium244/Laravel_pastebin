@@ -65,6 +65,9 @@
 
                                     <a href="{{ url('auth/google') }}" style="margin-top: 20px;" class="btn btn-lg btn-success btn-block">
                                     <strong>Login With Google</strong>
+
+                                    <a href="{{ url('auth/github') }}" style="margin-top: 20px;" class="btn btn-lg btn-warning btn-block">
+                                    <strong>Login With GitHub</strong>
                                 </a> 
                             </div>
                         </div>
