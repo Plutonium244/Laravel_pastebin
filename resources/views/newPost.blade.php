@@ -16,9 +16,11 @@
 		<div class="row">
 			<textarea id="text" name="text" rows="5" cols="45"></textarea>
 		</div>
-		<div class="row"> <label>Установить пароль</label> </div>
+
 		<div class="row">
-			<textarea id="title" name="title" rows="1" cols="45" placeholder="Пустое поле = публичная заметка"></textarea>
+			<button type="submit" class="btn btn-success">
+				<i class="fa fa-plus"></i> Сохранить заметку
+			</button>
 		</div>
 	</div>
 	</div>
