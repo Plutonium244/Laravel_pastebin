@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
+use Carbon\Carbon; 
 
 class PostsController extends Controller
 {
@@ -17,6 +18,17 @@ class PostsController extends Controller
     public function __construct()
     {
         $this->posts = Post::with('user')->get();
+        foreach ($this->posts as $post) {
+            $currentDateTime = new Carbon();
+            if ($post->lifetime > 0 && 
+                $currentDateTime->diffInMinutes( $post->created_at ) > $post->lifetime)
+            {
+                dump('Заметка №'.$post->id.' должна быть удалена');
+                // Если будет много заметок или много пользователей, можно перевести эту задачу на крон. Либо создавать отдельную очередь для крона, в которую помещать запросы на удаление в определённую минуту. 
+                // Post::delete($post->id);
+                // unset($post);
+            }
+        }
     }
 
     public function index(Post $posts)
@@ -93,7 +105,8 @@ class PostsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Post::find($id)->delete();
+        return back();
     }
 
     public function getPostsByAuthor($id)

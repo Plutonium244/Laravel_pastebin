@@ -12,7 +12,7 @@
 					@csrf
 					@method ('PUT')
 					<div>
-						Автор: {{$p->user->id == 0?"Аноним":$p->user->name}}
+						Автор: {{$p->user->name}}
 						
 						<button type="submit" class="btn btn-default btn-sm bnt-nopadding">
 							<img class="edit" src="../icons/save.jpeg">

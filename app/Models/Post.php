@@ -11,6 +11,7 @@ class Post extends Model
         'text' => 'text',
         'created_at' => 'date',
         'user_id' => 'int',
+        'lifetime' => 'int',
     ];
 
     protected $fillable = [
@@ -18,6 +19,7 @@ class Post extends Model
     	'text', 
     	'created_at',
         'user_id',
+        'lifetime',
     ];
     
     public function user()
