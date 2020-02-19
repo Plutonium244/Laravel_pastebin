@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -10,16 +10,18 @@ class Post extends Model
         'title' => 'string',
         'text' => 'text',
         'created_at' => 'date',
+        'user_id' => 'int',
     ];
 
     protected $fillable = [
-    	"title", 
-    	"text", 
-    	"created_at"
+    	'title', 
+    	'text', 
+    	'created_at',
+        'user_id',
     ];
     
-    public function author()
+    public function user()
     {
-        return $this->hasOne('App\User');
+        return $this->belongsTo('App\User');
     }
 }

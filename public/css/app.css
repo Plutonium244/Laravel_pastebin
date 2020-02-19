@@ -744,6 +744,7 @@ pre code {
   width: 100%;
   padding-right: 15px;
   padding-left: 15px;
+  margin-bottom: 20px;
 }
 
 .col {
@@ -10884,3 +10885,10 @@ a.text-dark:focus {
   }
 }
 
+.edit {
+  max-height: 12px;
+}
+
+.bnt-nopadding{
+  padding: 0px;
+}

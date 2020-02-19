@@ -24,3 +24,7 @@ Route::get('auth/google/callback', 'Auth\GoogleController@handleGoogleCallback')
 
 Route::get('auth/github', 'Auth\GithubController@redirectToGithub');
 Route::get('auth/github/callback', 'Auth\GithubController@handleGithubCallback');
+
+Route::resource('posts', 'PostsController');
+
+Route::get('/{id}/posts', ['uses' =>'PostsController@getPostsByAuthor']);
