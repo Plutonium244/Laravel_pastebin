@@ -6,9 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Post;
 use Carbon\Carbon; 
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cookie;
-use Illuminate\Http\Response;
-use Illuminate\Cookie\CookieJar;
+use Illuminate\Support\Facades\Session;
 
 class PostsController extends Controller
 {
@@ -38,7 +36,6 @@ class PostsController extends Controller
 
     public function index(Request $request)
     {
-        dump($request->cookie());
         return view('posts', [
         'posts' => $this->posts
         ]);
@@ -60,10 +57,18 @@ class PostsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CookieJar $cookieJar, Request $request)
+    public function store(Request $request)
     {
+        $shortlink = '';
+        if (!isset(auth()->user()->id)) {
+            $shortlink = md5(uniqid(""));
+            Session::flash(
+                'shortlink',
+                'Store your shortlink for post edits: '.url('/shortlink/'.$shortlink));
+        }
         Post::create($request->all()+[
-            'user_id' => isset(auth()->user()->id) ? auth()->user()->id : '0'
+            'user_id' => isset(auth()->user()->id) ? auth()->user()->id : '0',
+            'shortlink' => $shortlink
         ]);
         return back();
     }
@@ -128,6 +133,17 @@ class PostsController extends Controller
         $posts = Post::with('user')->where('password',$request->password)->get();
         return view('posts', [
         'posts' => $posts
+        ]);
+    }
+
+    public function editPostByShortlink($shortlink)
+    {
+        $post = Post::with('user')
+        ->where('shortlink', $shortlink)
+        ->limit(1)
+        ->get();
+        return view('shortlink', [
+        'p' => $post[0]
         ]);
     }
 }

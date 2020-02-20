@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
+	@if (Session::has('shortlink'))
+	<div class="alert alert-success">
+		{{ Session::get('shortlink') }}
+	</div>
+	@endif
 	<div class="container">
 	<h2>Заметки</h2>
 	<div class="row">

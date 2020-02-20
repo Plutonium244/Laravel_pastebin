@@ -30,3 +30,6 @@ Route::resource('posts', 'PostsController');
 Route::get('/{id}/posts', ['uses' =>'PostsController@getPostsByAuthor']);
 
 Route::get('/private', ['uses' =>'PostsController@getPostsByPassword'])->name('private');
+
+
+Route::get('/shortlink/{shortlink}', ['uses' =>'PostsController@editPostByShortlink']);

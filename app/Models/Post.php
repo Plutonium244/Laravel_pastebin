@@ -12,7 +12,8 @@ class Post extends Model
         'text' => 'text',
         'user_id' => 'int',
         'lifetime' => 'int',
-        'password' => 'string'
+        'password' => 'string',
+        'shortlink' => 'string',
     ];
 
     protected $fillable = [
@@ -21,6 +22,7 @@ class Post extends Model
         'user_id',
         'lifetime',
         'password',
+        'shortlink',
     ];
     
     public function user()
