@@ -6,20 +6,21 @@ use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
+
 	protected $casts = [
         'title' => 'string',
         'text' => 'text',
-        'created_at' => 'date',
         'user_id' => 'int',
         'lifetime' => 'int',
+        'password' => 'string'
     ];
 
     protected $fillable = [
     	'title', 
     	'text', 
-    	'created_at',
         'user_id',
         'lifetime',
+        'password',
     ];
     
     public function user()

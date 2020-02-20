@@ -10886,9 +10886,13 @@ a.text-dark:focus {
 }
 
 .edit {
-  max-height: 12px;
+  max-height: 20px;
 }
 
 .bnt-nopadding{
   padding: 0px;
+}
+
+.delete {
+  max-height: 25px;
 }

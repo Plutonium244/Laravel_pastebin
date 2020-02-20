@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use Carbon\Carbon; 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
+use Illuminate\Http\Response;
+use Illuminate\Cookie\CookieJar;
 
 class PostsController extends Controller
 {
@@ -17,22 +21,24 @@ class PostsController extends Controller
 
     public function __construct()
     {
-        $this->posts = Post::with('user')->get();
+        $this->posts = Post::with('user')
+        ->where('password', NULL)
+        ->get();
         foreach ($this->posts as $post) {
-            $currentDateTime = new Carbon();
+            $currentDateTime = Carbon::now();
             if ($post->lifetime > 0 && 
                 $currentDateTime->diffInMinutes( $post->created_at ) > $post->lifetime)
-            {
+            {  
                 dump('Заметка №'.$post->id.' должна быть удалена');
-                // Если будет много заметок или много пользователей, можно перевести эту задачу на крон. Либо создавать отдельную очередь для крона, в которую помещать запросы на удаление в определённую минуту. 
                 // Post::delete($post->id);
                 // unset($post);
             }
         }
     }
 
-    public function index(Post $posts)
+    public function index(Request $request)
     {
+        dump($request->cookie());
         return view('posts', [
         'posts' => $this->posts
         ]);
@@ -54,7 +60,7 @@ class PostsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CookieJar $cookieJar, Request $request)
     {
         Post::create($request->all()+[
             'user_id' => isset(auth()->user()->id) ? auth()->user()->id : '0'
@@ -112,6 +118,14 @@ class PostsController extends Controller
     public function getPostsByAuthor($id)
     {
         $posts = Post::with('user')->where('user_id',$id)->get();
+        return view('posts', [
+        'posts' => $posts
+        ]);
+    }
+
+    public function getPostsByPassword(Request $request)
+    {
+        $posts = Post::with('user')->where('password',$request->password)->get();
         return view('posts', [
         'posts' => $posts
         ]);
