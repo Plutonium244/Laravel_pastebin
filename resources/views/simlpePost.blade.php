@@ -1,5 +1,5 @@
 
-Автор: {{$p->user->id == 0?"Аноним":$p->user->name}}
+Автор: {{isset($p->user->id)?$p->user->name:"Аноним"}}
 <div>Дата: {{$p->created_at}}</div>
 <input type="hidden" id="id" class="form-control" value="{{$p->id}}">
 <input type="text" id="{{$p->id}}title" class="form-control" value="{{$p->title}}" disabled="true">

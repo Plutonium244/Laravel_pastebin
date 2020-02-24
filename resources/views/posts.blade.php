@@ -11,7 +11,7 @@
 	<div class="row">
 	@foreach ($posts as $p)
 		<div class="col-sm-4">
-			@if (isset(auth()->user()->id))
+			@if (isset(auth()->user()->id) && isset($p->user->id))
 				@if (auth()->user()->id == $p->user->id)
 					@include('editablePost')
 				@else

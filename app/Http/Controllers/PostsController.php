@@ -26,7 +26,6 @@ class PostsController extends Controller
 
     public function index(Request $request)
     {
-        dump();
         $this->deleteTooOld();
         return view('posts', [
         'posts' => $this->posts
@@ -143,7 +142,8 @@ class PostsController extends Controller
         ->limit(1)
         ->get();
         return view('shortlink', [
-        'p' => $post[0]
+        'p' => $post[0],
+        'username' => 'Аноним'
         ]);
     }
 
