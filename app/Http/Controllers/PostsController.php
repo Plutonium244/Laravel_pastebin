@@ -22,20 +22,12 @@ class PostsController extends Controller
         $this->posts = Post::with('user')
         ->where('password', NULL)
         ->get();
-        foreach ($this->posts as $post) {
-            $currentDateTime = Carbon::now();
-            if ($post->lifetime > 0 && 
-                $currentDateTime->diffInMinutes( $post->created_at ) > $post->lifetime)
-            {  
-                dump('Заметка №'.$post->id.' должна быть удалена');
-                // Post::delete($post->id);
-                // unset($post);
-            }
-        }
     }
 
     public function index(Request $request)
     {
+        dump();
+        $this->deleteTooOld();
         return view('posts', [
         'posts' => $this->posts
         ]);
@@ -61,7 +53,10 @@ class PostsController extends Controller
     {
         $shortlink = '';
         if (!isset(auth()->user()->id)) {
-            $shortlink = md5(uniqid(""));
+            do {
+                $shortlink = md5(uniqid(""));
+            }
+            while (Post::where('shortlink', $shortlink)->count() > 0);
             Session::flash(
                 'shortlink',
                 'Store your shortlink for post edits: '.url('/shortlink/'.$shortlink));
@@ -122,15 +117,20 @@ class PostsController extends Controller
 
     public function getPostsByAuthor($id)
     {
-        $posts = Post::with('user')->where('user_id',$id)->get();
+        $this->deleteTooOld();
+        $posts = Post::where('user_id',$id)->get();
+        $username = auth()->user()->name;
+        dump($username);
         return view('posts', [
-        'posts' => $posts
+        'posts' => $posts,
+        'username' => $username,
         ]);
     }
 
     public function getPostsByPassword(Request $request)
     {
-        $posts = Post::with('user')->where('password',$request->password)->get();
+        $this->deleteTooOld();
+        $posts = Post::where('password',$request->password)->get();
         return view('posts', [
         'posts' => $posts
         ]);
@@ -145,5 +145,19 @@ class PostsController extends Controller
         return view('shortlink', [
         'p' => $post[0]
         ]);
+    }
+
+    private function deleteTooOld()
+    {
+        foreach ($this->posts as $post) {
+            $currentDateTime = Carbon::now();
+            if ($post->lifetime > 0 && 
+                $currentDateTime->diffInMinutes( $post->created_at ) > $post->lifetime)
+            {  
+                dump('Заметка №'.$post->id.' должна быть удалена');
+                // Post::delete($post->id);
+                // unset($post);
+            }
+        }
     }
 }

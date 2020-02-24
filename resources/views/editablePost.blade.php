@@ -2,7 +2,7 @@
 <form action="{{ route('posts.update', $p->id)}}" method="POST" class="form-horizontal">
 	@csrf
 	@method ('PUT')
-		Автор: {{$p->user->name}}
+		Автор: {{isset($username)?$username:$p->user->name}}
 		<button type="submit" class="btn btn-default btn-sm bnt-nopadding">
 			<img class="edit" src="../icons/save.jpeg">
 		</button>

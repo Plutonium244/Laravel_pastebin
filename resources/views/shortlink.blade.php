@@ -9,5 +9,4 @@
 		</div>
 	</div>
 	</div>
-	@include('newPost')
 @endsection
